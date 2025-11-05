@@ -1,0 +1,181 @@
+# MedGemma Spine X-ray Finetuning Configuration
+
+# Model Configuration
+model:
+  name: "google/medgemma-27b"
+  use_flash_attention: true
+  load_in_8bit: false
+  load_in_4bit: true  # Use 4-bit quantization for memory efficiency
+  use_lora: true
+  lora_r: 16
+  lora_alpha: 32
+  lora_dropout: 0.05
+  lora_target_modules:
+    - "q_proj"
+    - "k_proj"
+    - "v_proj"
+    - "o_proj"
+    - "gate_proj"
+    - "up_proj"
+    - "down_proj"
+
+# Data Configuration
+data:
+  # Data paths
+  train_data_path: "data/processed/train"
+  val_data_path: "data/processed/val"
+  test_data_path: "data/processed/test"
+  report_embeddings_path: "data/embeddings/report_embeddings.pkl"
+
+  # Image settings
+  image_size: [512, 512]
+  normalize_mean: [0.485, 0.456, 0.406]
+  normalize_std: [0.229, 0.224, 0.225]
+
+  # Augmentation
+  use_augmentation: true
+  augmentation:
+    horizontal_flip_prob: 0.5
+    rotation_limit: 10
+    brightness_contrast_prob: 0.3
+    noise_prob: 0.2
+
+  # Batch size
+  batch_size: 4
+  num_workers: 4
+
+  # Class labels
+  spine_regions:
+    - "cervical"
+    - "thoracic"
+    - "lumbar"
+
+  pose_types:
+    - "neutral"
+    - "flexion"
+    - "extension"
+    - "oblique"
+
+  pathologies:
+    - "normal"
+    - "degenerative_disc_disease"
+    - "herniated_disc"
+    - "spinal_stenosis"
+    - "spondylolisthesis"
+    - "compression_fracture"
+    - "scoliosis"
+    - "ankylosing_spondylitis"
+    - "infection"
+    - "tumor"
+
+  implants:
+    - "none"
+    - "screws"
+    - "rods"
+    - "cage"
+    - "artificial_disc"
+    - "bone_graft"
+
+# Training Configuration
+training:
+  # Basic settings
+  num_epochs: 50
+  learning_rate: 2.0e-4
+  weight_decay: 0.01
+  warmup_steps: 500
+  max_grad_norm: 1.0
+
+  # Optimizer
+  optimizer: "adamw"
+  scheduler: "cosine"
+
+  # Mixed precision
+  fp16: false
+  bf16: true
+
+  # Gradient accumulation
+  gradient_accumulation_steps: 4
+
+  # Checkpointing
+  save_steps: 500
+  eval_steps: 500
+  save_total_limit: 5
+
+  # Logging
+  logging_steps: 50
+  log_level: "info"
+
+  # Multi-task learning weights
+  task_weights:
+    region_classification: 1.0
+    pose_classification: 1.0
+    pathology_classification: 2.0
+    implant_detection: 1.5
+    report_generation: 3.0
+
+  # Early stopping
+  early_stopping_patience: 5
+  early_stopping_threshold: 0.001
+
+# Embedding Configuration
+embeddings:
+  model_name: "sentence-transformers/all-MiniLM-L6-v2"
+  embedding_dim: 384
+  max_seq_length: 512
+
+  # Medical domain specific
+  use_medical_vocabulary: true
+  medical_terms_file: "configs/medical_terms.txt"
+
+  # Training
+  embedding_batch_size: 32
+  embedding_epochs: 10
+
+# Evaluation Configuration
+evaluation:
+  metrics:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1"
+    - "auc_roc"
+    - "confusion_matrix"
+
+  # Per-task evaluation
+  evaluate_per_region: true
+  evaluate_per_pose: true
+  evaluate_per_pathology: true
+
+# Output Configuration
+output:
+  checkpoint_dir: "checkpoints"
+  log_dir: "logs"
+  result_dir: "results"
+
+  # Model saving
+  save_model_format: "huggingface"  # or "pytorch"
+  save_embeddings: true
+
+  # Visualization
+  save_attention_maps: true
+  save_predictions: true
+
+# Weights & Biases Configuration
+wandb:
+  enabled: true
+  project: "medgemma-spine-xray"
+  entity: null
+  tags:
+    - "medgemma"
+    - "spine"
+    - "xray"
+    - "multi-task"
+
+# Hardware Configuration
+hardware:
+  device: "cuda"
+  num_gpus: 1
+  distributed: false
+
+# Random seed
+seed: 42

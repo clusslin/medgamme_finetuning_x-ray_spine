@@ -1,0 +1,139 @@
+# Spine X-ray Medical Terminology
+
+# Anatomical Terms
+cervical spine
+thoracic spine
+lumbar spine
+vertebral body
+intervertebral disc
+facet joint
+spinous process
+transverse process
+pedicle
+lamina
+spinal canal
+neural foramen
+neuroforamen
+vertebral endplate
+disc space
+
+# Pathologies
+degenerative disc disease
+disc degeneration
+disc herniation
+herniated disc
+bulging disc
+extruded disc
+sequestered disc
+spinal stenosis
+central canal stenosis
+lateral recess stenosis
+foraminal stenosis
+spondylolisthesis
+anterolisthesis
+retrolisthesis
+compression fracture
+burst fracture
+wedge compression
+scoliosis
+kyphosis
+lordosis
+ankylosing spondylitis
+bamboo spine
+diffuse idiopathic skeletal hyperostosis
+DISH
+spondylosis
+osteophyte
+bone spur
+facet arthropathy
+facet hypertrophy
+ligamentum flavum hypertrophy
+ossification of posterior longitudinal ligament
+OPLL
+vertebral osteomyelitis
+discitis
+epidural abscess
+metastatic disease
+vertebral metastasis
+lytic lesion
+sclerotic lesion
+pathological fracture
+
+# Poses and Views
+anteroposterior
+AP view
+lateral view
+oblique view
+flexion view
+extension view
+dynamic study
+standing film
+supine film
+
+# Implants and Hardware
+pedicle screw
+pedicle screw fixation
+rod
+interbody cage
+TLIF cage
+PLIF cage
+ALIF cage
+artificial disc
+disc prosthesis
+bone graft
+bone cement
+vertebroplasty
+kyphoplasty
+laminectomy
+fusion
+spinal fusion
+instrumentation
+hardware
+metallic implant
+
+# Radiographic Findings
+alignment
+malalignment
+subluxation
+translation
+angulation
+disc height
+disc space narrowing
+loss of disc height
+endplate irregularity
+Schmorl's node
+vacuum phenomenon
+calcification
+ossification
+bone quality
+osteopenia
+osteoporosis
+sclerosis
+lucency
+soft tissue swelling
+paraspinal soft tissue
+prevertebral soft tissue
+
+# Grades and Severity
+mild
+moderate
+severe
+grade I
+grade II
+grade III
+grade IV
+minimal
+marked
+pronounced
+
+# Directional Terms
+anterior
+posterior
+superior
+inferior
+lateral
+medial
+right
+left
+bilateral
+unilateral
