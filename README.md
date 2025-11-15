@@ -9,6 +9,7 @@
 5. ✅ **植入物判斷** - 識別screw、rod、cage等植入物
 6. ✅ **報告生成** - 自動生成放射科報告
 7. ✅ **語意Embedding** - 針對脊椎報告進行語意embedding訓練
+8. ✅ **🆕 自動化幾何測量** - 脊椎基準線、椎體間距、Cobb角度等精確測量
 
 ## 📁 專案結構
 
@@ -16,6 +17,7 @@
 medgamme_finetuning_x-ray_spine/
 ├── configs/
 │   ├── train_config.yaml          # 訓練配置
+│   ├── measurement_config.yaml    # 測量配置 🆕
 │   └── medical_terms.txt          # 醫學術語詞典
 ├── data/
 │   ├── raw/                       # 原始數據
@@ -30,18 +32,24 @@ medgamme_finetuning_x-ray_spine/
 │   │   ├── preprocessing.py      # 影像預處理
 │   │   └── augmentation.py       # 數據增強
 │   ├── models/
-│   │   └── medgemma_model.py     # MedGemma模型
+│   │   ├── medgemma_model.py     # MedGemma模型
+│   │   └── keypoint_detector.py  # 關鍵點檢測器 🆕
 │   ├── training/
 │   │   └── trainer.py            # 訓練器
 │   └── utils/
 │       ├── embeddings.py         # 文本embedding
-│       └── metrics.py            # 評估指標
+│       ├── metrics.py            # 評估指標
+│       ├── measurements.py       # 幾何測量 🆕
+│       └── visualization.py      # 可視化工具 🆕
 ├── scripts/
 │   ├── train.py                  # 訓練腳本
 │   ├── evaluate.py               # 評估腳本
 │   ├── inference.py              # 推理腳本
+│   ├── measure_spine.py          # 測量腳本 🆕
 │   └── prepare_embeddings.py     # Embedding準備腳本
-├── notebooks/                     # Jupyter notebooks
+├── notebooks/
+│   ├── example_usage.md          # 使用範例
+│   └── measurement_examples.md   # 測量範例 🆕
 ├── checkpoints/                   # 模型檢查點
 ├── logs/                         # 訓練日誌
 └── requirements.txt              # 依賴套件
@@ -150,6 +158,41 @@ python scripts/inference.py \
     --generate_report \
     --output results/inference_result.json
 ```
+
+### 7. 🆕 自動化幾何測量
+
+執行脊椎幾何測量（基準線、間距、角度）：
+
+```bash
+# 基本測量
+python scripts/measure_spine.py \
+    --image path/to/spine_xray.png \
+    --region lumbar \
+    --visualize \
+    --output_dir results/measurements
+
+# 指定像素間距（mm/pixel）
+python scripts/measure_spine.py \
+    --image path/to/spine_lateral.dcm \
+    --pixel_spacing 0.143 \
+    --region cervical \
+    --visualize \
+    --show_plots
+```
+
+**測量功能包括：**
+- ✅ 椎體關鍵點自動檢測（7個關鍵點/椎體）
+- ✅ 椎體高度測量（前緣、後緣、楔形變化）
+- ✅ 椎間盤高度測量
+- ✅ 脊椎基準線（Anterior/Posterior Vertebral Lines）
+- ✅ Cobb角度測量（脊柱側彎評估）
+- ✅ 脊椎排列偏差分析
+- ✅ 脊椎滑脫檢測（Spondylolisthesis + Meyerding分級）
+- ✅ 前凸/後凸角度測量
+- ✅ 完整的測量報告（JSON格式）
+- ✅ 可視化標註影像
+
+詳細使用方法請參考：[測量功能範例](notebooks/measurement_examples.md)
 
 ## ⚙️ 配置說明
 

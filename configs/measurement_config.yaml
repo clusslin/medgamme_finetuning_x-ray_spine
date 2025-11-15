@@ -1,0 +1,83 @@
+# Spine Measurement Configuration
+
+# Keypoint Detection Configuration
+keypoint_detection:
+  enabled: true
+  num_vertebrae: 24  # Max: C1-C7 (7), T1-T12 (12), L1-L5 (5)
+  num_keypoints_per_vertebra: 7  # 4 corners + 2 pedicles + 1 spinous process
+  heatmap_size: [128, 128]
+  gaussian_sigma: 2.0
+  presence_threshold: 0.5  # Threshold for vertebra presence detection
+
+# Measurement Configuration
+measurements:
+  # Pixel spacing (mm per pixel) - should be extracted from DICOM or calibrated
+  pixel_spacing: 0.5  # Default value, should be adjusted per image
+
+  # Enable specific measurements
+  compute_vertebral_heights: true
+  compute_disc_heights: true
+  compute_alignment_lines: true
+  compute_cobb_angle: true
+  compute_spondylolisthesis: true
+  compute_curvature: true
+
+  # Thresholds and parameters
+  min_disc_height_mm: 2.0  # Flag if disc height < this value
+  max_cobb_angle_normal: 10.0  # Degrees (>10 may indicate scoliosis)
+  spondylolisthesis_threshold: 25.0  # Percent (Meyerding grade 2+)
+
+# Visualization Configuration
+visualization:
+  # Colors (BGR format for OpenCV)
+  keypoint_color: [255, 100, 100]
+  avl_color: [0, 255, 0]  # Anterior Vertebral Line - Green
+  pvl_color: [255, 0, 0]  # Posterior Vertebral Line - Blue
+  measurement_color: [255, 255, 0]  # Yellow
+  disc_color: [0, 255, 255]  # Cyan
+
+  # Line thickness
+  line_thickness: 2
+  keypoint_radius: 4
+
+  # Labels
+  show_labels: true
+  show_measurements: true
+  font_scale: 0.6
+  font_thickness: 2
+
+  # Transparency
+  heatmap_alpha: 0.5
+  overlay_alpha: 0.7
+
+# Report Generation
+report:
+  # Include in measurement report
+  include_vertebral_heights: true
+  include_disc_heights: true
+  include_alignment_deviation: true
+  include_curvature_analysis: true
+  include_spondylolisthesis_check: true
+
+  # Format
+  output_format: "json"  # json, yaml, or text
+  precision: 2  # Decimal places for measurements
+
+  # Clinical thresholds for reporting
+  thresholds:
+    disc_height_loss_severe: 50  # Percent loss compared to adjacent levels
+    alignment_deviation_significant: 3.0  # mm
+    wedging_significant: 3.0  # mm (vertebral wedging)
+
+# Training Configuration (if keypoint detection is trained)
+training:
+  keypoint_loss_weight: 1.0
+  presence_loss_weight: 0.5
+  heatmap_loss_type: "mse"  # mse or focal
+
+  # Data augmentation for keypoints
+  augmentation:
+    apply_to_keypoints: true
+    max_rotation: 10  # degrees
+    max_translation: 0.05  # fraction of image size
+    max_scale: 0.1  # fraction
